@@ -208,6 +208,14 @@ The AI agent has access to the following tools exposed by MCP servers:
 
 4. **Open the application** at http://localhost:3000
 
+#### Execute All Tests
+
+To execute all tests, including system tests, run the following command from the project root:
+
+```bash
+mvn clean install -Pwith-system-tests
+```
+
 ## ✍ Author
 
 Dominik Cebula

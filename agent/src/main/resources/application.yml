@@ -1,0 +1,33 @@
+spring:
+  ai:
+    bedrock:
+      aws:
+        region: eu-central-1
+      converse:
+        chat:
+          options:
+            model: eu.anthropic.claude-opus-4-5-20251101-v1:0
+            max-tokens: 4096
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            products-mcp-server:
+              url: ${PRODUCTS_MCP_URL:http://localhost:8021}
+            orders-mcp-server:
+              url: ${ORDERS_MCP_URL:http://localhost:8031}
+    model:
+      embedding: bedrock-cohere
+    vectorstore:
+      mongodb:
+        initialize-schema: true
+        collection-name: ai_vector_store
+        index-name: vector_index
+        path-name: embedding
+        metadata-fields-to-filter: conversationId,memoryType,createdAt
+  data:
+    mongodb:
+      uri: ${MONGO_DB_URI:mongodb://admin:secret@localhost:27017/?authSource=admin&directConnection=true}
+      database: ${MONGO_DB_NAME:shopping-agent}
+server:
+  port: 8050

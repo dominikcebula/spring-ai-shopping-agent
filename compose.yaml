@@ -1,0 +1,64 @@
+services:
+  agent-chat-ui:
+    container_name: agent-chat-ui
+    image: "agent-chat-ui:1.0.0"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - agent
+  agent:
+    container_name: agent
+    image: "agent:1.0-SNAPSHOT"
+    ports:
+      - "8050:8050"
+    environment:
+      MONGO_DB_URI: mongodb://admin:secret@mongo:27017/?authSource=admin&directConnection=true
+      MONGO_DB_NAME: shopping-agent
+      PRODUCTS_MCP_URL: http://products-mcp-server:8021/
+      ORDERS_MCP_URL: http://orders-mcp-server:8031/
+    volumes:
+      - ~/.aws:/home/cnb/.aws:ro
+    depends_on:
+      mongo:
+        condition: service_healthy
+      products-mcp-server:
+        condition: service_started
+      orders-mcp-server:
+        condition: service_started
+  products-mcp-server:
+    container_name: products-mcp-server
+    image: "products-mcp-server:1.0-SNAPSHOT"
+    ports:
+      - "8021:8021"
+    environment:
+      PRODUCTS_API_BASE_URI: http://products-microservice:8020
+    depends_on:
+      - products-microservice
+  products-microservice:
+    container_name: products-microservice
+    image: "products-microservice:1.0-SNAPSHOT"
+    ports:
+      - "8020:8020"
+  orders-mcp-server:
+    container_name: orders-mcp-server
+    image: "orders-mcp-server:1.0-SNAPSHOT"
+    ports:
+      - "8031:8031"
+    environment:
+      ORDERS_API_BASE_URI: http://orders-microservice:8030
+    depends_on:
+      - orders-microservice
+  orders-microservice:
+    container_name: orders-microservice
+    image: "orders-microservice:1.0-SNAPSHOT"
+    ports:
+      - "8030:8030"
+  mongo:
+    container_name: mongo
+    image: 'mongodb/mongodb-atlas-local:8.0.14'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_INITDB_DATABASE: shopping-agent
+      MONGODB_INITDB_ROOT_USERNAME: admin
+      MONGODB_INITDB_ROOT_PASSWORD: secret

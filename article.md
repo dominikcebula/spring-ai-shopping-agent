@@ -92,14 +92,14 @@ increased complexity, network overhead, and latency.
 
 The following technologies are used in this solution:
 
-| Layer    | Technology                                     |
-|----------|------------------------------------------------|
-| AI / LLM | Spring AI 1.1.2                                |
-| Backend  | Java 25, Spring Boot 3.5.12, Spring AI MCP     |
-| Frontend | React 19, TypeScript                           |
-| Protocol | Model Context Protocol (MCP) - Streamable HTTP |
-| Storage  | MongoDB Atlas (chat history + vector store)    |
-| Build    | Maven (multi-module), npm                      |
+| Layer     | Technology                                        |
+|-----------|---------------------------------------------------|
+| AI/LLM    | Spring AI 1.1.2                                   |
+| Backend   | Java 25, Spring Boot 3.5.12, Spring AI MCP Server |
+| Frontend  | React 18, TypeScript                              |
+| Protocols | Model Context Protocol (MCP), REST APIs           |
+| Build     | Maven, npm                                        |
+| Testing   | JUnit, Testcontainers, Spring Boot Test           |
 
 ## Implementation
 

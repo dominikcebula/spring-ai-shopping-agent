@@ -920,6 +920,11 @@ embedding model:
 The agent searches for relevant long-term memory entries using semantic search before answering a question. If entries
 are found, they are added to the prompt context.
 
+`MemoryRetrievalAdvisor` augments the existing system message with a `----- MEMORY -----` block, where each entry is
+listed with its `Memory Type` (`EPISODIC` or `SEMANTIC`) and `Memory Content`. The original user message is then sent
+unchanged. This keeps memories visible to the LLM throughout the response while avoiding the cost of replaying full
+chat history.
+
 Here is an example of a prompt with extracted long-term memories:
 
 ```text
@@ -931,6 +936,43 @@ Use the Long-term MEMORY below if relevant. Keep answers factual and concise.
 3. Memory Type: SEMANTIC, Memory Content: User is setting up a home office
 ------------------
 ```
+
+For example, suppose the user starts a new conversation, with no chat history yet — asks:
+
+```text
+Recommend a laptop and accessories for me.
+```
+
+`MemoryRetrievalAdvisor` runs a semantic search against the vector store for this `conversationId`, retrieves the top
+matching memory entries (here, 2 `EPISODIC` and 1 `SEMANTIC`), and appends them to the system message. The resulting
+list of messages sent to the LLM looks like this:
+
+```text
+[
+  {
+    type: 'SYSTEM',
+    content: 'You are a helpful shopping assistant ...
+
+              Use the Long-term MEMORY below if relevant. Keep answers factual and concise.
+              
+              ----- MEMORY -----
+              1. Memory Type: EPISODIC, Memory Content: User prefers budget laptops with at least 8GB RAM
+              2. Memory Type: EPISODIC, Memory Content: User prefers wireless peripherals
+              3. Memory Type: SEMANTIC, Memory Content: User is setting up a home office
+              ------------------'
+  },
+  {
+    type: 'USER',
+    content: 'Recommend a laptop and accessories for me.'
+  }
+]
+```
+
+With both `EPISODIC` preferences (budget laptop, wireless peripherals) and the `SEMANTIC` fact (home office setup) in
+context, the LLM can produce a recommendation tailored to the user even though none of that information appears in the
+current conversation thread. Compared to short-term memory — which uses real `UserMessage` / `AssistantMessage` turns
+prepended via `MessageChatMemoryAdvisor` — long-term memory is injected as compact, structured text inside the system
+message, which keeps token usage low while still surfacing facts from past conversations.
 
 ### Types of long-term memory
 

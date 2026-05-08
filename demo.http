@@ -1,0 +1,6 @@
+### Retrieve all orders
+GET http://localhost:8030/api/v1/orders
+
+### Retrieve a specific order by ID
+@orderId = 2c30fff4-b536-4271-86d4-e51e6852e049
+GET http://localhost:8030/api/v1/orders/{{orderId}}

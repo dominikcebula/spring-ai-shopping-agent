@@ -16,7 +16,9 @@ orchestrates these tools using AWS Bedrock (Claude Opus 4.5) to deliver a seamle
 
 ### Presentation & Demo
 
-You can watch the recorded presentation of this repository on YouTube under https://www.youtube.com/watch?v=CCs-lYKSBiM
+You can watch the recorded presentation of this repository on YouTube:
+
+[![YouTube Video](https://img.youtube.com/vi/CCs-lYKSBiM/0.jpg)](https://www.youtube.com/watch?v=CCs-lYKSBiM)
 
 ### Example Interaction
 

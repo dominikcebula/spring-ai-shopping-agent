@@ -14,6 +14,10 @@ orchestrates these tools using AWS Bedrock (Claude Opus 4.5) to deliver a seamle
 
 ![agent-chat-ui.png](docs/agent-chat-ui.png)
 
+### Presentation & Demo
+
+You can watch the recorded presentation of this repository on YouTube under https://www.youtube.com/watch?v=CCs-lYKSBiM
+
 ### Example Interaction
 
 The agent helps users find the right products and create orders using prompts like:
